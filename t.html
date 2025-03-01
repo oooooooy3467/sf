@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食物盲盒</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            overflow: hidden;
+        }
+        h1 {
+            margin-top: 100px;
+            font-size: 48px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        #openButton {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #FF6F61;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        #gifContainer {
+            display: none;
+            margin-top: 20px;
+        }
+        #gifContainer img {
+            width: 150px;
+            height: 150px;
+        }
+        .food-decor {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            opacity: 0.8;
+        }
+        .food-decor.top-left {
+            top: 10px;
+            left: 10px;
+        }
+        .food-decor.top-right {
+            top: 10px;
+            right: 10px;
+        }
+        .food-decor.bottom-left {
+            bottom: 10px;
+            left: 10px;
+        }
+        .food-decor.bottom-right {
+            bottom: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 食物装饰 -->
+    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081987.png" class="food-decor top-left">
+    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081987.png" class="food-decor top-right">
+    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081987.png" class="food-decor bottom-left">
+    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081987.png" class="food-decor bottom-right">
+
+    <!-- 问题 -->
+    <h1>下一餐吃什么？</h1>
+
+    <!-- 开盲盒按钮 -->
+    <button id="openButton">开盲盒</button>
+
+    <!-- 结果展示 -->
+    <div id="result"></div>
+
+    <!-- 打开礼盒动图 -->
+    <div id="gifContainer">
+        <img src="https://media.giphy.com/media/3o7TKUM3IgJBX2as9O/giphy.gif" alt="Opening Gift Box">
+    </div>
+
+    <!-- 背景音乐 -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-summer.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
+
+    <script>
+        // 食物列表
+        const foods = [
+            "🍕 披萨", "🍔 汉堡", "🍣 寿司", "🍜 拉面", 
+            "🍛 咖喱饭", "🥗 沙拉", "🍩 甜甜圈", "🍦 冰淇淋"
+        ];
+
+        // 获取元素
+        const openButton = document.getElementById('openButton');
+        const resultDiv = document.getElementById('result');
+        const gifContainer = document.getElementById('gifContainer');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        // 背景音乐自动播放
+        window.addEventListener('click', () => {
+            backgroundMusic.play();
+        });
+
+        // 开盲盒逻辑
+        openButton.addEventListener('click', () => {
+            // 显示动图
+            gifContainer.style.display = 'block';
+            resultDiv.textContent = '';
+
+            // 2秒后显示随机食物
+            setTimeout(() => {
+                gifContainer.style.display = 'none';
+                const randomFood = foods[Math.floor(Math.random() * foods.length)];
+                resultDiv.innerHTML = `${randomFood}<br><small>enjoy your meal！</small>`;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
