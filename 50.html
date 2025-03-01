@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SF 是不是要给 ZZN 50 块钱？</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        #yesButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #noButton {
+            background-color: #f44336;
+            color: white;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>SF 是不是要给 ZZN 50 块钱？</h1>
+    <button id="yesButton">当然了</button>
+    <button id="noButton">不要</button>
+    <div id="result"></div>
+
+    <script>
+        // 获取按钮和结果显示区域
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const resultDiv = document.getElementById('result');
+
+        // 点击“当然了”按钮
+        yesButton.addEventListener('click', () => {
+            resultDiv.textContent = '爱你哦 ❤️';
+            resultDiv.style.color = '#4CAF50';
+        });
+
+        // 点击“不要”按钮
+        noButton.addEventListener('click', () => {
+            resultDiv.textContent = '😭';
+            resultDiv.style.color = '#f44336';
+        });
+    </script>
+</body>
+</html>
