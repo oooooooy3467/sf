@@ -2,545 +2,149 @@
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微博数据可视化分析</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <style>
-        :root {
-            --primary-color: #e74c3c;
-            --secondary-color: #3498db;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --gray-color: #6c757d;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 引入 Bootstrap 样式 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>微博数据分析可视化</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
 
-        body {
-            background-color: #f5f5f5;
-            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-            color: #333;
-            line-height: 1.6;
-        }
+    .header {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
 
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), #c0392b);
-            color: white;
-            padding: 2.5rem 0;
-            margin-bottom: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+    .card {
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
 
-        .header h1 {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
+    .card:hover {
+      transform: translateY(-5px);
+    }
 
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 0;
-        }
-
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-weight: 600;
-            padding: 1rem 1.5rem;
-            border-radius: 10px 10px 0 0 !important;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .stat-card .stat-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-card .stat-label {
-            color: var(--gray-color);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .weibo-card {
-            padding: 1.5rem;
-        }
-
-        .weibo-content {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: #444;
-        }
-
-        .weibo-stats {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .weibo-stat {
-            display: flex;
-            align-items: center;
-            color: var(--gray-color);
-            font-size: 0.9rem;
-        }
-
-        .weibo-stat i {
-            margin-right: 0.3rem;
-            font-size: 1.1rem;
-        }
-
-        .weibo-time {
-            color: var(--gray-color);
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-
-        .btn-weibo {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-weibo:hover {
-            background-color: #c0392b;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .chart-container {
-            height: 300px;
-            padding: 1rem;
-        }
-
-        .section-title {
-            text-align: center;
-            margin: 2rem 0 1.5rem;
-            position: relative;
-        }
-
-        .section-title h2 {
-            display: inline-block;
-            background-color: white;
-            padding: 0 1.5rem;
-            position: relative;
-            z-index: 1;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-
-        .section-title:after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background-color: #dee2e6;
-            z-index: 0;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 1.5rem 0;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .stat-card .stat-value {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    .chart-img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 
 <body>
-    <!-- 页眉 -->
-    <div class="header">
-        <div class="container">
-            <h1>微博数据分析可视化平台</h1>
-            <p>基于爬取的微博数据进行多维度可视化展示</p>
+  <!-- 头部区域 -->
+  <header class="header text-center">
+    <h1 class="display-4">微博数据分析可视化</h1>
+    <p class="lead">基于爬取的微博数据进行多维度可视化展示</p>
+  </header>
+
+  <!-- 内容容器 -->
+  <div class="container">
+    <!-- 概览统计卡片 -->
+    <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+      <div class="col">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <h5 class="card-title">总微博数</h5>
+            <p class="card-text fs-1">200</p>
+          </div>
         </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <h5 class="card-title">总转发数</h5>
+            <p class="card-text fs-1">512958</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <h5 class="card-title">总评论数</h5>
+            <p class="card-text fs-1">176261</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <h5 class="card-title">总点赞数</h5>
+            <p class="card-text fs-1">1631591</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="container">
-        <!-- 概览统计 -->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card stat-card">
-                    <div class="stat-value">200</div>
-                    <div class="stat-label">总微博数</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card stat-card">
-                    <div class="stat-value">512,958</div>
-                    <div class="stat-label">总转发数</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card stat-card">
-                    <div class="stat-value">176,261</div>
-                    <div class="stat-label">总评论数</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card stat-card">
-                    <div class="stat-value">1,631,591</div>
-                    <div class="stat-label">总点赞数</div>
-                </div>
-            </div>
+    <!-- 热门微博卡片 -->
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-primary text-white">最热门微博</div>
+          <div class="card-body">
+            <p class="card-text">
+              2025“北京大视听”网络视听精品项目今日发布。 主演的《千香》、 主演的《双轨》、 等主演的《唐朝诡事录之长安》、 主演的《你好，1983》等15部网络剧， 《种地吧3》等13部网络 ...全文
+            </p>
+            <p class="text-muted small">转发：1324 | 评论：6295 | 点赞：139637 | 发布时间：2025-07-02 21:45</p>
+          </div>
         </div>
-
-        <!-- 热门微博 -->
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-fire"></i> 最热门微博
-                    </div>
-                    <div class="card-body weibo-card">
-                        <div class="weibo-content">2025“北京大视听”网络视听精品项目今日发布。主演的《千香》、主演的《双轨》、等主演的《唐朝诡事录之长安》、主演的《你好，1983》等15部网络剧，《种地吧3》等13部网络...</div>
-                        <div class="weibo-stats">
-                            <div class="weibo-stat">
-                                <i class="fas fa-share"></i> 1,324 转发
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-comment"></i> 6,295 评论
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-heart"></i> 139,637 点赞
-                            </div>
-                        </div>
-                        <div class="weibo-time">
-                            <i class="far fa-clock"></i> 2025-07-02 21:45
-                        </div>
-                        <!-- 移除了查看完整微博按钮 -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- 发帖时间分布 -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="far fa-clock"></i> 发帖时间分布
-                    </div>
-                    <div class="card-body">
-                        <div id="hourChart" class="chart-container"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 互动数据图表 -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-chart-line"></i> 微博互动数据趋势
-                    </div>
-                    <div class="card-body">
-                        <canvas id="interactionChart" class="chart-container"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 微博列表 -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="section-title">
-                    <h2>微博内容列表</h2>
-                </div>
-
-                <div class="card mb-3">
-                    <div class="card-body weibo-card">
-                        <div class="weibo-content">【今日热点】最新研究表明，每天坚持30分钟有氧运动可以有效提高免疫力，降低患病风险。专家建议大家保持适量运动，增强体质！</div>
-                        <div class="weibo-stats">
-                            <div class="weibo-stat">
-                                <i class="fas fa-share"></i> 24,567 转发
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-comment"></i> 12,345 评论
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-heart"></i> 156,789 点赞
-                            </div>
-                        </div>
-                        <div class="weibo-time">
-                            <i class="far fa-clock"></i> 2025-07-05 14:23
-                        </div>
-                        <a href="#" target="_blank" class="btn btn-sm btn-weibo">
-                            查看原文
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card mb-3">
-                    <div class="card-body weibo-card">
-                        <div class="weibo-content">【科技前沿】全球首款量子计算手机正式发布，运算速度比传统手机快100万倍！这款手机将为人工智能、大数据分析等领域带来革命性突破。</div>
-                        <div class="weibo-stats">
-                            <div class="weibo-stat">
-                                <i class="fas fa-share"></i> 18,765 转发
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-comment"></i> 9,876 评论
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-heart"></i> 123,456 点赞
-                            </div>
-                        </div>
-                        <div class="weibo-time">
-                            <i class="far fa-clock"></i> 2025-07-04 18:45
-                        </div>
-                        <a href="#" target="_blank" class="btn btn-sm btn-weibo">
-                            查看原文
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card mb-3">
-                    <div class="card-body weibo-card">
-                        <div class="weibo-content">【美食推荐】这家隐藏在巷子里的小店，竟然做出了全城最好吃的小笼包！皮薄馅大，汤汁鲜美，每天限量供应，想吃的小伙伴要早点去排队哦！</div>
-                        <div class="weibo-stats">
-                            <div class="weibo-stat">
-                                <i class="fas fa-share"></i> 12,345 转发
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-comment"></i> 6,789 评论
-                            </div>
-                            <div class="weibo-stat">
-                                <i class="fas fa-heart"></i> 89,012 点赞
-                            </div>
-                        </div>
-                        <div class="weibo-time">
-                            <i class="far fa-clock"></i> 2025-07-04 10:15
-                        </div>
-                        <a href="#" target="_blank" class="btn btn-sm btn-weibo">
-                            查看原文
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- Font Awesome 图标 -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- 图表区域 -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-success text-white">微博发布频率趋势（按日）</div>
+          <div class="card-body text-center">
+            <!-- 替换为实际图表图片路径 -->
+            <img src="chart1.png" alt="微博发布频率趋势" class="chart-img">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-success text-white">一天中不同小时的微博发布数量</div>
+          <div class="card-body text-center">
+            <!-- 替换为实际图表图片路径 -->
+            <img src="chart2.png" alt="小时发布数量" class="chart-img">
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // 发帖时间分布图表
-        var hourChart = echarts.init(document.getElementById('hourChart'));
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-info text-white">转发数、评论数和点赞数之间的关系</div>
+          <div class="card-body text-center">
+            <!-- 替换为实际图表图片路径 -->
+            <img src="chart3.png" alt="互动关系" class="chart-img">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-info text-white">互动总量最高的前10条微博</div>
+          <div class="card-body text-center">
+            <!-- 替换为实际图表图片路径 -->
+            <img src="chart4.png" alt="互动总量Top10" class="chart-img">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 删除了互动量最高的前十条微博表格区域 -->
+  </div>
 
-        var hourData = [
-            { hour: '00:00', count: 5 },
-            { hour: '03:00', count: 3 },
-            { hour: '06:00', count: 7 },
-            { hour: '09:00', count: 15 },
-            { hour: '12:00', count: 28 },
-            { hour: '15:00', count: 35 },
-            { hour: '18:00', count: 42 },
-            { hour: '21:00', count: 30 }
-        ];
-        
-        var hours = hourData.map(item => item.hour);
-        var counts = hourData.map(item => item.count);
-
-        var hourOption = {
-            tooltip: {
-                trigger: 'axis',
-                formatter: '{b}<br/>发帖数: {c}'
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'category',
-                data: hours,
-                axisLine: {
-                    lineStyle: {
-                        color: '#ddd'
-                    }
-                },
-                axisLabel: {
-                    color: '#666'
-                }
-            },
-            yAxis: {
-                type: 'value',
-                axisLine: {
-                    lineStyle: {
-                        color: '#ddd'
-                    }
-                },
-                axisLabel: {
-                    color: '#666'
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: '#eee'
-                    }
-                }
-            },
-            series: [{
-                data: counts,
-                type: 'bar',
-                itemStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        { offset: 0, color: '#ff7e5f' },
-                        { offset: 1, color: '#feb47b' }
-                    ]),
-                    borderRadius: [4, 4, 0, 0]
-                },
-                emphasis: {
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: '#ff6e53' },
-                            { offset: 1, color: '#fe9b7b' }
-                        ])
-                    }
-                }
-            }]
-        };
-
-        hourChart.setOption(hourOption);
-
-        // 互动数据图表
-        var interactionData = [
-            { date: '7/1', shares: 12000, comments: 8500, likes: 56000 },
-            { date: '7/2', shares: 19000, comments: 12500, likes: 78000 },
-            { date: '7/3', shares: 15000, comments: 9200, likes: 62000 },
-            { date: '7/4', shares: 22000, comments: 15000, likes: 95000 },
-            { date: '7/5', shares: 35000, comments: 22000, likes: 150000 },
-            { date: '7/6', shares: 42000, comments: 28000, likes: 180000 },
-            { date: '7/7', shares: 38000, comments: 25000, likes: 165000 },
-            { date: '7/8', shares: 31000, comments: 21000, likes: 140000 },
-            { date: '7/9', shares: 28000, comments: 19000, likes: 130000 }
-        ];
-        
-        var labels = interactionData.map(item => item.date);
-        var shares = interactionData.map(item => item.shares);
-        var comments = interactionData.map(item => item.comments);
-        var likes = interactionData.map(item => item.likes);
-
-        var ctx = document.getElementById('interactionChart').getContext('2d');
-        var interactionChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: '转发数',
-                        data: shares,
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        borderColor: 'rgba(231, 76, 60, 1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: 'rgba(231, 76, 60, 1)',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    },
-                    {
-                        label: '评论数',
-                        data: comments,
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: 'rgba(52, 152, 219, 1)',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    },
-                    {
-                        label: '点赞数',
-                        data: likes,
-                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                        borderColor: 'rgba(46, 204, 113, 1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: 'rgba(46, 204, 113, 1)',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            maxRotation: 45,
-                            minRotation: 45
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        }
-                    }
-                }
-            }
-        });
-
-        // 窗口大小变化时重新调整图表大小
-        window.addEventListener('resize', function () {
-            hourChart.resize();
-            interactionChart.resize();
-        });
-    </script>
+  <!-- 引入 Bootstrap JS（可选，若需要交互组件） -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
